@@ -27,9 +27,15 @@ def query_user_tweets(user_id : str, start_time : str):
     next_token = response.json()['meta'].get('next_token')
 
     while(next_token):
-        response = requests.get(f"{request_url}&pagination_token={next_token}", headers=headers)
-        tweets = tweets + response.json()['data']
-        next_token = response.json()['meta'].get('next_token')
+        try:
+            response = requests.get(f"{request_url}&pagination_token={next_token}", headers=headers)
+            tweets = tweets + response.json()['data']
+            next_token = response.json()['meta'].get('next_token')
+        except:
+            print(f"Error paginating more tweets for user {user_id}.\n Restarting the process will resume correctly. Reponse:")
+            print(response.json())
+            print(f"Search : https://twitter.com/{user_id} . If \"This account doesn't exist\" add {user_id} to 'accounts_to_skip' and resume")
+            raise Exception
     
     return tweets
     
@@ -52,7 +58,7 @@ def process_mastodon_profile_urls(url: str):
         return False, None
     return True, url
 
-def main(clean_users: bool, start_time: str):
+def main(clean_users: bool, start_time: str, accounts_to_skip: list):
     users = pd.read_csv('./users.csv', delimiter=',', index_col=None)
     
     if(clean_users):
@@ -70,8 +76,9 @@ def main(clean_users: bool, start_time: str):
     for idx, row in users.iterrows():
         twitter_id = row['twitter_id']
         twitter_user = row['twitter_username']
-            
-        if(Path(f"./tweets/{twitter_user}").is_dir() or twitter_id in [2883291]):
+        
+        
+        if(Path(f"./tweets/{twitter_user}").is_dir() or twitter_id in accounts_to_skip):
             continue
         
         tweets = query_user_tweets(twitter_id, start_time)
@@ -84,4 +91,5 @@ def main(clean_users: bool, start_time: str):
 if __name__ == "__main__":
     
     start_time = "2022-01-01T00:00:00Z"
-    main(clean_users=False, start_time = start_time)
+    accounts_to_skip = [2883291, 1351039079467642881]
+    main(clean_users=False, start_time = start_time, accounts_to_skip = accounts_to_skip)
