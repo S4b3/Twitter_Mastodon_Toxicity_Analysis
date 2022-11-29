@@ -16,13 +16,12 @@ def query_user_tweets(user_id : str, start_time : str):
         response = requests.get(request_url, headers=headers)
         tweets = response.json().get('data')
     except:
-        print(f"USERNAME {user_id}\n\n")
-        print(f"REPONSE {response.url}")
         print(f"Couldn't reserve tweets for user {user_id}\nException: {response.json()}")
         raise Exception()
     if(not tweets):
         print(f"DANGEROUS Error on twitter user {user_id}")
         print(response.json())
+        print(f"Add its username to accounts_to_skip and restart")
 
     next_token = response.json()['meta'].get('next_token')
 
@@ -91,5 +90,5 @@ def main(clean_users: bool, start_time: str, accounts_to_skip: list):
 if __name__ == "__main__":
     
     start_time = "2022-01-01T00:00:00Z"
-    accounts_to_skip = [2883291, 1351039079467642881]
+    accounts_to_skip = [2883291, 1351039079467642881, 1341848074860290050]
     main(clean_users=False, start_time = start_time, accounts_to_skip = accounts_to_skip)
