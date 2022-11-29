@@ -131,4 +131,7 @@ dmypy.json
 ./data/*.json
 ./tweets/*.json
 checkpoint.txt
-*.csv
+
+data
+tweets
+.DS_Store
