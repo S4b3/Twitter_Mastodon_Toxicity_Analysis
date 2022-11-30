@@ -64,7 +64,8 @@ def process_mastodon_profile_urls(url: str):
 def process_users_dataframe(users):
     
     start_time = "2022-01-01T00:00:00Z"
-    accounts_to_skip = [1271494254490275846, 9817342, 4855009595, 20941392, 1523882642718011396, 2962960156, 2883291, 1351039079467642881, 1341848074860290050, 1333519596092076039, 913913679883718656, 1547838011261403136, 18463834, 1062773630264782849]
+    # accounts we're not processing! Note: some of this accounts may either have been deleted after the scraping process, or they just became private. 
+    accounts_to_skip = [3796609599, 23823664, 747693332, 4817945427, 1417546088341544964, 1228370295746154496, 325868692, 1271494254490275846, 9817342, 4855009595, 20941392, 1523882642718011396, 2962960156, 2883291, 1351039079467642881, 1341848074860290050, 1333519596092076039, 913913679883718656, 1547838011261403136, 18463834, 1062773630264782849]
     
     for _, row in users.iterrows():
         twitter_id = row['twitter_id']
@@ -98,14 +99,14 @@ def main(clean_users: bool):#, start_time: str, accounts_to_skip: list):
     # count amount of directories in tweets
     
     tot_users = len(users)
-    users_processed = len(next(os.walk('./tweets'))[1])
-    users_remaining = tot_users - users_processed
-    print(f"{users_remaining} users left to process")
+    #users_processed = len(next(os.walk('./tweets'))[1])
+    #users_remaining = tot_users - users_processed
+    #print(f"{users_remaining} users left to process")
     
     # now split dataframe in chunks to multiprocess
     num_processes = multiprocessing.cpu_count()
-    chunk_size = int(users_remaining/num_processes)
-    chunks = [users.iloc[users.index[i:i + chunk_size]] for i in range(users_processed, users.shape[0], chunk_size)]
+    chunk_size = int(tot_users/num_processes)
+    chunks = [users.iloc[users.index[i:i + chunk_size]] for i in range(0, tot_users, chunk_size)]
     
     print(f"We have {len(chunks)} chunks")
     # create our pool with `num_processes` processes
