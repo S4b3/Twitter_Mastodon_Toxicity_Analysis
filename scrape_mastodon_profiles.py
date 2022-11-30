@@ -61,11 +61,11 @@ def parse_mastodon_post_to_txt(chunk):
         # use an xml parser to extract the tag that contains our id
         try:
             id = ET.fromstring(mastodon_rss_reponse.text).find('./channel/image/url')#.text.split('/')[-1]
+            id = ''.join(id.text.split('avatars/')[-1].split('/original')[0].split('/'))
         except:
             discarded_users += 1
-            print(f"Got an error processing current user: {mastodon_url}. \nRequest url: {request_url}. Going next")
+            print(f"Got an error processing current user: {mastodon_url}. \nRequest url: {request_url}.\nIts id was {id}. Going next")
             continue
-        id = ''.join(id.text.split('avatars/')[-1].split('/original')[0].split('/'))
         if(id == "originalmissing.png"):
             original_missing += 1
             continue
