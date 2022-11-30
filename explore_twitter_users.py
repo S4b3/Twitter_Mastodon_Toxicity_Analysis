@@ -2,8 +2,6 @@ from pathlib import Path
 import os
 from glob import iglob
 
-rootdir_glob = 'C:/Users/sid/Desktop/test/**/*' # Note the added asterisks
-# This will return absolute paths
 def explore_users():
     
     root_dir = Path('./tweets')
