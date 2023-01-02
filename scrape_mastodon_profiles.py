@@ -6,6 +6,9 @@ import html
 import multiprocessing
 from bs4 import BeautifulSoup
 from pathlib import Path
+from googleapiclient import discovery
+
+
 
 
 def parse_mastodon_post_to_txt(chunk):
@@ -60,8 +63,8 @@ def parse_mastodon_post_to_txt(chunk):
         mastodon_rss_reponse = requests.get(request_url)
         # use an xml parser to extract the tag that contains our id
         try:
-            id = ET.fromstring(mastodon_rss_reponse.text).find('./channel/image/url')#.text.split('/')[-1]
-            id = ''.join(id.text.split('avatars/')[-1].split('/original')[0].split('/'))
+            id_pre = ET.fromstring(mastodon_rss_reponse.text).find('./channel/image/url')#.text.split('/')[-1]
+            id = ''.join(id_pre.text.split('avatars/')[-1].split('/original')[0].split('/'))
         except:
             discarded_users += 1
             print(f"Got an error processing current user: {mastodon_url}. \nRequest url: {request_url}.\nIts id was {id}. Going next")
@@ -74,8 +77,11 @@ def parse_mastodon_post_to_txt(chunk):
         # example request -> https://mstdn.social/api/v1/accounts/109394907532170837/statuses
         api_request_url = f"{mastodon_server}/api/v1/accounts/{id}/statuses"
         # interrogate the api, response will contain a list of posts parsed in json 
-       
-        api_response = requests.get(api_request_url)
+        try:
+            api_response = requests.get(api_request_url)
+        except:
+            print(f"CAUTION Exception raised when querying the api at {api_request_url}.\nUSER INFO:\nmastodon url : {mastodon_url}\nid_pre : {id_pre}\nid : {id}")
+            continue
         # load the posts
         if(Path(f"./mastodon_posts/{mastodon_server.split('/')[-1]}_{mastodon_username}").is_dir()):
             already_processed += 1
@@ -88,7 +94,7 @@ def parse_mastodon_post_to_txt(chunk):
         
         for post_json in user_posts:
             if(post_json['reblog'] or post_json['content'] == ""):
-                return
+                continue
             _mast_info = post_json['uri'].split('/users/')
             mastodon_server = _mast_info[0].split('/')[-1]
             mastodon_username = _mast_info[1].split('/statuses')[0]
@@ -115,8 +121,7 @@ def parse_mastodon_post_to_txt(chunk):
 
     print(f"Finished Chunk {chunk_id+1} with :\nProcessed: {processed_now}\nDiscarded Users: {discarded_users}\nOriginal Missing PNG as ID : {original_missing}\nAlready Processed: {already_processed}")
     
-
-def main(multithreading=True):
+def scrape(multithreading):
     users = pd.read_csv('./users.csv')
     # first let's process our user's username and id
     # 1. extract known url
@@ -140,6 +145,36 @@ def main(multithreading=True):
         pool.map(parse_mastodon_post_to_txt, chunks)
     else:
         parse_mastodon_post_to_txt([0, users])
+
+def query_perspective(api_client):
+    
+    with open('./mastodon_posts/c.im_3RingCircus/109395051045403099.json', 'r+') as post_file:
+        post = json.load(post_file)
+    
+    
+    analyze_request = {
+        'comment': { 'text': post['content'] },
+        'requestedAttributes': {'TOXICITY': {}}
+    }
+
+    response = api_client.comments().analyze(body=analyze_request).execute()
+    print(json.dumps(response, indent=2))
+
+def main(multithreading=True, scrape_mast = True):
+    if(scrape_mast):
+        scrape(multithreading)
+    with open('./apikey.txt') as api_file: 
+        API_KEY = api_file.read()
+    
+    query_perspective( api_client = discovery.build(
+        "commentanalyzer",
+        "v1alpha1",
+        developerKey=API_KEY,
+        discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
+        static_discovery=False,
+    ))
+    
+    
     
 if __name__ == "__main__":
-    main(True)
+    main(True, scrape_mast=False)

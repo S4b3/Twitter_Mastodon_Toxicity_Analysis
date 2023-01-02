@@ -136,3 +136,4 @@ data
 tweets
 mastodon_posts
 .DS_Store
+*.txt
