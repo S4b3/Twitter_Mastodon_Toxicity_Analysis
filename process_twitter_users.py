@@ -28,18 +28,19 @@ def query_user_tweets(user_id : str, start_time : str):
         return None
 
     next_token = response.json()['meta'].get('next_token')
-
-    while(next_token):
+    page = 2
+    while(next_token and page <= 5):
         try:
             response = requests.get(f"{request_url}&pagination_token={next_token}", headers=headers)
             tweets = tweets + response.json()['data']
             next_token = response.json()['meta'].get('next_token')
+            page += 1
         except:
             print(f"Error paginating more tweets for user {user_id}.\n Restarting the process will resume correctly. Reponse:")
             print(response.json())
             print(f"Search : https://twitter.com/{user_id} . If \"This account doesn't exist\" add {user_id} to 'accounts_to_skip'")
             break
-    
+        
     return tweets
     
 
@@ -65,7 +66,18 @@ def process_users_dataframe(users):
     
     start_time = "2022-01-01T00:00:00Z"
     # accounts we're not processing! Note: some of this accounts may either have been deleted after the scraping process, or they just became private. 
-    accounts_to_skip = [3796609599, 23823664, 747693332, 4817945427, 1417546088341544964, 1228370295746154496, 325868692, 1271494254490275846, 9817342, 4855009595, 20941392, 1523882642718011396, 2962960156, 2883291, 1351039079467642881, 1341848074860290050, 1333519596092076039, 913913679883718656, 1547838011261403136, 18463834, 1062773630264782849]
+    accounts_to_skip = [1400093333196791808, 1453041424136556555, 1005726141200715776,
+                        1390410321131712518, 1232369725075861504, 1332382494914736128,
+                        375282975, 1133103253573570561, 104120337, 1377330245850775556,
+                        15699553, 92204371, 756556016649723904, 115313586, 2997889577,
+                        1022908216815112192, 1325901630, 1118978367531962368, 22775616,
+                        14744403, 65581806, 773799617003683840, 19652597, 1209084588393406464,
+                        2270823308, 346285266, 28180275, 3796609599, 23823664, 747693332,
+                        4817945427, 1417546088341544964, 1228370295746154496, 325868692,
+                        1271494254490275846, 9817342, 4855009595, 20941392, 1523882642718011396,
+                        2962960156, 2883291, 1351039079467642881, 1341848074860290050,
+                        1333519596092076039, 913913679883718656, 1547838011261403136, 18463834,
+                        1062773630264782849]
     
     for _, row in users.iterrows():
         twitter_id = row['twitter_id']

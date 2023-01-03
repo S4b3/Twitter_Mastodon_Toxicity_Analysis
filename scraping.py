@@ -22,7 +22,8 @@ def scrape_mastodon_tweets(bearer : str):
     # curl https://api.twitter.com/2/tweets/search/recent?query=cat%20has%3Amedia%20-grumpy&tweet.fields=created_at&max_results=100 -H "Authorization: Bearer $BEARER_TOKEN"
     request = requests.get(url=_url, headers={"Authorization" : f"Bearer {bearer}"})
     data = (request.json())['data']
-    next_token = (request.json())['meta']['next_token']
+    print(request.json()['meta'])
+    next_token = request.json()['meta'].get('next_token')
 
     ten_perc = len(data) / 10
 
@@ -101,6 +102,7 @@ def main(start, checkpoint):
         
     users = []
     counter = 0
+    keep_checkpoint = False
     for path in sorted(glob.glob("./data/*.json")):
             
         if(counter % 50 == 0):
@@ -119,6 +121,7 @@ def main(start, checkpoint):
                 continue
         except:
             print(f"Most Likely Reached maximum api requests at {counter}")
+            keep_checkpoint = True
             with open('./checkpoint.txt', "w+") as file:
                 file.write(str(counter))
             break
@@ -134,10 +137,10 @@ def main(start, checkpoint):
         csv_out=csv.writer(out)
         csv_out.writerows(users)
      
-    if(counter <= 1190):
+    if(keep_checkpoint and counter <= 1190):
         time.sleep(60*16)
         main(start = False,checkpoint = True)
 
 if __name__ == "__main__":
-    main(start = False, checkpoint = True)
+    main(start = True, checkpoint = False)
         

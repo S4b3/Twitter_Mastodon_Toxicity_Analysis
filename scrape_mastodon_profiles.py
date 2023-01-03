@@ -9,8 +9,6 @@ from pathlib import Path
 from googleapiclient import discovery
 
 
-
-
 def parse_mastodon_post_to_txt(chunk):
     '''
     for each post we have a structure like this:
@@ -57,12 +55,14 @@ def parse_mastodon_post_to_txt(chunk):
         # 3. save both server and username, we will need them to query the api.
         mastodon_server = _mast_info[0]
         mastodon_username = _mast_info[1].split('/')[0]
-        
+        if(mastodon_username == 'dsotm'):
+            discarded_users += 1
+            continue
         # every user on mastodon has an associated rss. This can be requested to scrape a user's ID
         request_url = f"{mastodon_server}/@{mastodon_username}.rss"
-        mastodon_rss_reponse = requests.get(request_url)
-        # use an xml parser to extract the tag that contains our id
         try:
+            mastodon_rss_reponse = requests.get(request_url)
+            # use an xml parser to extract the tag that contains our id
             id_pre = ET.fromstring(mastodon_rss_reponse.text).find('./channel/image/url')#.text.split('/')[-1]
             id = ''.join(id_pre.text.split('avatars/')[-1].split('/original')[0].split('/'))
         except:
@@ -160,21 +160,10 @@ def query_perspective(api_client):
     response = api_client.comments().analyze(body=analyze_request).execute()
     print(json.dumps(response, indent=2))
 
-def main(multithreading=True, scrape_mast = True):
-    if(scrape_mast):
-        scrape(multithreading)
-    with open('./apikey.txt') as api_file: 
-        API_KEY = api_file.read()
-    
-    query_perspective( api_client = discovery.build(
-        "commentanalyzer",
-        "v1alpha1",
-        developerKey=API_KEY,
-        discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
-        static_discovery=False,
-    ))
+def main(multithreading=True):
+    scrape(multithreading)
     
     
     
 if __name__ == "__main__":
-    main(True, scrape_mast=False)
+    main()
