@@ -7,7 +7,7 @@ import multiprocessing
 import os
 
 
-bearer_token = "AAAAAAAAAAAAAAAAAAAAAHxzQAEAAAAAp%2FwFwzH8TnqjCihLYO%2Fzu2tmKBQ%3Db5IWOus5vbHL5EMO0oWmaRSF8cb2j1uvazwk6N0V6PYPzBpSyX"
+bearer_token = "AAAAAAAAAAAAAAAAAAAAAC7IlAEAAAAAfoaln2kKYoXI8xiBWLl203J6zoM%3DuRNUzaVpXBPJYFcQTliOP0GpjyroT40TNdhG56jKfDTVatOB8O"
 
 def query_user_tweets(user_id : str, start_time : str):
     
@@ -27,7 +27,7 @@ def query_user_tweets(user_id : str, start_time : str):
         print(f"Add its username to accounts_to_skip")
         return None
 
-    next_token = response.json()['meta'].get('next_token')
+    next_token = None # response.json()['meta'].get('next_token')
     page = 2
     while(next_token and page <= 5):
         try:
@@ -93,7 +93,8 @@ def process_users_dataframe(users):
         print(f"Saving {len(tweets)} tweets for user {twitter_user}")
         save_tweets_to_files(tweets, twitter_user)
             
-            
+   
+'''           
 def main(clean_users: bool):#, start_time: str, accounts_to_skip: list):
     users = pd.read_csv('./users.csv', delimiter=',', index_col=None)
     
@@ -133,4 +134,5 @@ if __name__ == "__main__":
     
     # start_time = "2022-01-01T00:00:00Z"
     # accounts_to_skip = [2883291, 1351039079467642881, 1341848074860290050, 1333519596092076039, 913913679883718656, 1547838011261403136]
-    main(clean_users=False)#, start_time = start_time, accounts_to_skip = accounts_to_skip)
+    main(clean_users=False)#, start_time = start_time, accounts_to_skip = accounts_to_skip)  
+'''
