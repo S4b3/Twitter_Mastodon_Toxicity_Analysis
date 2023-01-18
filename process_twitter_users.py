@@ -94,7 +94,7 @@ def process_users_dataframe(users):
         save_tweets_to_files(tweets, twitter_user)
             
    
-'''           
+        
 def main(clean_users: bool):#, start_time: str, accounts_to_skip: list):
     users = pd.read_csv('./users.csv', delimiter=',', index_col=None)
     
@@ -135,4 +135,3 @@ if __name__ == "__main__":
     # start_time = "2022-01-01T00:00:00Z"
     # accounts_to_skip = [2883291, 1351039079467642881, 1341848074860290050, 1333519596092076039, 913913679883718656, 1547838011261403136]
     main(clean_users=False)#, start_time = start_time, accounts_to_skip = accounts_to_skip)  
-'''

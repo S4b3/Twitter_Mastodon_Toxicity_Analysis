@@ -2,9 +2,9 @@ from pathlib import Path
 import os
 from glob import iglob
 
-def explore_users():
+def explore_users(path):
     
-    root_dir = Path('./tweets')
+    root_dir = Path(path)
     directories = [ dir for dir in root_dir.glob('**') if dir.is_dir() ]
     users_amount = len(directories)
     
@@ -16,6 +16,7 @@ def explore_users():
 
 
 if __name__ == "__main__":
-    users, avg_files = explore_users()
+    #users, avg_files = explore_users(path='./tweets')
+    users, avg_files = explore_users(path='./mastodon_posts')
     
-    print(f"We have {users} users with an average of {avg_files} tweets per user")
+    print(f"We have {users} users with an average of {avg_files} posts per user")

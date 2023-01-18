@@ -41,11 +41,9 @@ def process_mastodon_profile(mastodon_url, save_path = None):
         return False
     # load the posts
     if(Path(f"./mastodon_posts/{mastodon_server.split('/')[-1]}_{mastodon_username}").is_dir()):
-        already_processed += 1
         return False
     
     Path(f"./mastodon_posts/{mastodon_server.split('/')[-1]}_{mastodon_username}").mkdir(parents=True, exist_ok=True)
-    
     
     user_posts = json.loads(api_response.text)
     
@@ -162,11 +160,10 @@ def query_perspective(api_client):
     print(json.dumps(response, indent=2))
 
   
-'''
+
 def main(multithreading=True):
     scrape(multithreading)
     
   
 if __name__ == "__main__":
     main()
-'''
