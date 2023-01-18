@@ -2,7 +2,7 @@
 
 Welcome to our repository!  
 This work was produced as delivery for the **Data Driven Modeling of Complex Systems** course in Sapienza's Data Science Master's Degree.  
-An overview of the course can be found [here](https://walterquattrociocchi.site.uniroma1.it/teaching/data-driven-modeling-of-complex-systems).
+An overview of the course can be found [here](https://walterquattrociocchi.site.uniroma1.it/teaching/data-driven-modeling-of-complex-systems).  
 We'd like to thank Professor [Walter Quattrociocchi](https://walterquattrociocchi.site.uniroma1.it/research) for the course. 
 
 ## A brief introduction
