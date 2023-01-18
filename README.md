@@ -10,7 +10,7 @@ We'd like to thank Professor [Walter Quattrociocchi](https://walterquattrociocch
 This work takes its idea based on the many articles online refering to Mastodon as the new "less-toxic Twitter".  
 The core tool used in this work is [Perspective API](https://perspectiveapi.com/) produced by [JigSaw](https://jigsaw.google.com/) and Google to regulate toxicity among the web.  
 The study aims at either confirming or negating the theory of Mastodon being less toxic than twitter, by exploring users that are usually very, or non, toxic.  
-For the results achieved in the work we leave you to the [report]()
+For the results achieved in the work we leave you to the [report](https://github.com/S4b3/Twitter_Mastodon_Toxicity_Analysis/blob/main/Twitter%20and%20Mastodon%20Social%20Toxicity%20Analysis.pdf)
 
 
 ## Work Flow
