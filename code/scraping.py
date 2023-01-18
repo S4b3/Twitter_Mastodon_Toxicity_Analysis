@@ -34,7 +34,7 @@ def scrape_mastodon_tweets(bearer : str):
         id = element['id']
         element = json.dumps(element, indent=4)
         
-        with open(f"./data/tweet_{id}.json", "w") as outfile:
+        with open(f"../data/scraped_data/tweet_{id}.json", "w") as outfile:
             outfile.write(element)
 
 
@@ -53,7 +53,7 @@ def scrape_mastodon_tweets(bearer : str):
             id = element['id']
             element = json.dumps(element, indent = 4)
             
-            with open(f"./data/tweet_{id}.json", "w") as outfile:
+            with open(f"../data/scraped_data/tweet_{id}.json", "w") as outfile:
                 outfile.write(element)
         page += 1
     print(f"No more next tokens, we're finished!")
@@ -92,18 +92,18 @@ def main(start, checkpoint):
         scrape_mastodon_tweets(bearer_token)
     counter_checkpoint = 0
     if(checkpoint):
-        with open('checkpoint.txt', 'r') as checkpoint_file:
+        with open('../data/checkpoint.txt', 'r') as checkpoint_file:
             counter_checkpoint = int(checkpoint_file.readline())
             print(f"Skipping files up to checkpoint {counter_checkpoint}")
     else:
-        with open('./users.csv', "w+") as out:
+        with open('../data/users.csv', "w+") as out:
             csv_out=csv.writer(out)
             csv_out.writerow(['twitter_username', 'twitter_id', 'mastodon_username'])
         
     users = []
     counter = 0
     keep_checkpoint = False
-    for path in sorted(glob.glob("./data/*.json")):
+    for path in sorted(glob.glob("../data/scraped_data/*.json")):
             
         if(counter % 50 == 0):
             print(f"Processed {counter} tweets")
@@ -122,7 +122,7 @@ def main(start, checkpoint):
         except:
             print(f"Most Likely Reached maximum api requests at {counter}")
             keep_checkpoint = True
-            with open('./checkpoint.txt', "w+") as file:
+            with open('../data/checkpoint.txt', "w+") as file:
                 file.write(str(counter))
             break
         mastodon_url = re.search("(?P<url>https?://[^\s]+)", content).group("url")
@@ -133,7 +133,7 @@ def main(start, checkpoint):
             
         counter+= 1
     print(f"Finished processing Tweets! Extracted {len(users)} users.")
-    with open('./users.csv', "a") as out:
+    with open('../data/users.csv', "a") as out:
         csv_out=csv.writer(out)
         csv_out.writerows(users)
      

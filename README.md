@@ -16,7 +16,7 @@ For the results achieved in the work we leave you to the [report](https://github
 ## Work Flow
 ---
 
-In order to work with this project please **create** a **./data folder**, **./apikey.txt file** containing your **Google Perspective API KEY** and **./checkpoint.txt file** to save checkpoints for twitter users processing.  
+In order to work with this project please **create** a **./apikey.txt file** containing your **Google Perspective API KEY** and a **data** folder, containing a **./scraped_data folder** and a **./checkpoint.txt file** to save checkpoints for twitter users processing.  
 The flow of execution should be:
 
 1. **./scraping.py** with start = True and checkpoint = False to scrape tweets citing mastodon accounts

@@ -16,7 +16,7 @@ def explore_users(path):
 
 
 if __name__ == "__main__":
-    #users, avg_files = explore_users(path='./tweets')
+    #users, avg_files = explore_users(path='../data/tweets')
     users, avg_files = explore_users(path='./mastodon_posts')
     
     print(f"We have {users} users with an average of {avg_files} posts per user")

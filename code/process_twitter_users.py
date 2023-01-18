@@ -45,10 +45,10 @@ def query_user_tweets(user_id : str, start_time : str):
     
 
 def save_tweets_to_files(tweets: list, username: str):
-    Path(f"./tweets/{username}").mkdir(parents=True, exist_ok=True)
+    Path(f"../data/tweets/{username}").mkdir(parents=True, exist_ok=True)
     tot_tweets = len(tweets)
     for idx, tweet in enumerate(tweets):
-        with open(f"./tweets/{username}/tweet_{str(tweet['id'])}.json", "w+") as tweet_json:
+        with open(f"../data/tweets/{username}/tweet_{str(tweet['id'])}.json", "w+") as tweet_json:
             tweet_json.write(json.dumps(tweet, indent=4))
         if(idx != 0 and (idx / tot_tweets)*10 == 0):
             print(f"Processed {(idx / tot_tweets)*10}% of user {username}'s tweets")
@@ -84,7 +84,7 @@ def process_users_dataframe(users):
         twitter_user = row['twitter_username']
         
         
-        if(Path(f"./tweets/{twitter_user}").is_dir() or twitter_id in accounts_to_skip):
+        if(Path(f"../data/tweets/{twitter_user}").is_dir() or twitter_id in accounts_to_skip):
             continue
         
         tweets = query_user_tweets(twitter_id, start_time)
@@ -96,7 +96,7 @@ def process_users_dataframe(users):
    
         
 def main(clean_users: bool):#, start_time: str, accounts_to_skip: list):
-    users = pd.read_csv('./users.csv', delimiter=',', index_col=None)
+    users = pd.read_csv('../data/users.csv', delimiter=',', index_col=None)
     
     if(clean_users):
         cleaned_users = []
@@ -112,7 +112,7 @@ def main(clean_users: bool):#, start_time: str, accounts_to_skip: list):
     # count amount of directories in tweets
     
     tot_users = len(users)
-    #users_processed = len(next(os.walk('./tweets'))[1])
+    #users_processed = len(next(os.walk('../data/tweets'))[1])
     #users_remaining = tot_users - users_processed
     #print(f"{users_remaining} users left to process")
     

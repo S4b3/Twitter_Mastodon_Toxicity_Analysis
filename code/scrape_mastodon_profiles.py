@@ -40,10 +40,10 @@ def process_mastodon_profile(mastodon_url, save_path = None):
         print(f"CAUTION Exception raised when querying the api at {api_request_url}.\nUSER INFO:\nmastodon url : {mastodon_url}\nid_pre : {id_pre}\nid : {id}")
         return False
     # load the posts
-    if(Path(f"./mastodon_posts/{mastodon_server.split('/')[-1]}_{mastodon_username}").is_dir()):
+    if(Path(f"../data/mastodon_posts/{mastodon_server.split('/')[-1]}_{mastodon_username}").is_dir()):
         return False
     
-    Path(f"./mastodon_posts/{mastodon_server.split('/')[-1]}_{mastodon_username}").mkdir(parents=True, exist_ok=True)
+    Path(f"../data/mastodon_posts/{mastodon_server.split('/')[-1]}_{mastodon_username}").mkdir(parents=True, exist_ok=True)
     
     user_posts = json.loads(api_response.text)
     
@@ -60,7 +60,7 @@ def process_mastodon_profile(mastodon_url, save_path = None):
             print(post_json['content'])
             continue
         
-        dir_path = save_path or f"./mastodon_posts/{mastodon_server}_{mastodon_username}"
+        dir_path = save_path or f"../data/mastodon_posts/{mastodon_server}_{mastodon_username}"
         
         with open(f"{dir_path}/{post_json['id']}.json", 'w+') as json_file:
             json_file.write(json.dumps(
@@ -121,7 +121,7 @@ def parse_mastodon_post_to_txt(chunk):
     print(f"Finished Chunk {chunk_id+1} with :\nProcessed: {processed_now}\nDiscarded Users: {discarded_users}\nOriginal Missing PNG as ID : {original_missing}\nAlready Processed: {already_processed}")
     
 def scrape(multithreading):
-    users = pd.read_csv('./users.csv')
+    users = pd.read_csv('../data/users.csv')
     # first let's process our user's username and id
     # 1. extract known url
     print(f"Going to scrape {len(users)} users")
@@ -147,7 +147,7 @@ def scrape(multithreading):
 
 def query_perspective(api_client):
     
-    with open('./mastodon_posts/c.im_3RingCircus/109395051045403099.json', 'r+') as post_file:
+    with open('../data/mastodon_posts/c.im_3RingCircus/109395051045403099.json', 'r+') as post_file:
         post = json.load(post_file)
     
     

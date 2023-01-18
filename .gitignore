@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 ./data/*.json
-./tweets/*.json
+../data/tweets/*.json
 checkpoint.txt
 
 data
