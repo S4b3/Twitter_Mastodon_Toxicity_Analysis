@@ -6,7 +6,6 @@ An overview of the course can be found [here](https://walterquattrociocchi.site.
 We'd like to thank Professor [Walter Quattrociocchi](https://walterquattrociocchi.site.uniroma1.it/research) for the course. 
 
 ## A brief introduction
----
 This work takes its idea based on the many articles online refering to Mastodon as the new "less-toxic Twitter".  
 The core tool used in this work is [Perspective API](https://perspectiveapi.com/) produced by [JigSaw](https://jigsaw.google.com/) and Google to regulate toxicity among the web.  
 The study aims at either confirming or negating the theory of Mastodon being less toxic than twitter, by exploring users that are usually very, or non, toxic.  
@@ -14,8 +13,6 @@ For the results achieved in the work we leave you to the [report](https://github
 
 
 ## Work Flow
----
-
 In order to work with this project please **create** a **./apikey.txt file** containing your **Google Perspective API KEY** and a **data** folder, containing a **./scraped_data folder** and a **./checkpoint.txt file** to save checkpoints for twitter users processing.  
 The flow of execution should be:
 
@@ -30,7 +27,5 @@ Please Note if you run this work that some folders may require to be created by 
 The code contains our Bearer Token for Twitter V2 API calls, but note that this token will be expired for when this code is released. 
 
 ## Team
----
-
 Valentino Sacco - [GitHub](https://github.com/s4b3) - [LinkedIn](https://www.linkedin.com/in/valentino-sacco-61b84113b/)  
 Camilla Savarese - [GitHub](https://github.com/Camillasavarese) - [LinkedIn](https://www.linkedin.com/in/camilla-savarese-78aa67220/)  
