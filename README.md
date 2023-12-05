@@ -1,9 +1,7 @@
 # Twitter and Mastodon Social Toxicity Analysis
 
 Welcome to our repository!  
-This work was produced as delivery for the **Data Driven Modeling of Complex Systems** course in Sapienza's Data Science Master's Degree.  
-An overview of the course can be found [here](https://walterquattrociocchi.site.uniroma1.it/teaching/data-driven-modeling-of-complex-systems).  
-We'd like to thank Professor [Walter Quattrociocchi](https://walterquattrociocchi.site.uniroma1.it/research) for the course. 
+We'd like to thank Professor [Walter Quattrociocchi](https://walterquattrociocchi.site.uniroma1.it/research) for the inspiration. 
 
 ## A brief introduction
 This work takes its idea based on the many articles online refering to Mastodon as the new "less-toxic Twitter".  
